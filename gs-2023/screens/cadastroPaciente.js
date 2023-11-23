@@ -8,65 +8,78 @@ export default function CadastroPaciente({ navigation }) {
   const [name, setName] = useState("");
   const [cpf, setCpf] = useState("");
   const [address, setAddress] = useState("");
-  const [id, setId] = useState("");
+  const [age, setAge] = useState("");
   const [cellphone, setCellphone] = useState("");
   const [error, setError] = useState("");
   return (
-    <View style={styles.container}>
-      <View style={styles.form}>
-        <Text style={styles.title}>
-          Preencha os dados para cadastrar um paciente
-        </Text>
-        <Text style={styles.text}>{error}</Text>
-        <View style={styles.label}>
-          <Text style={styles.text}>Nome:</Text>
-          <Input value={name} onChangeText={setName} maxLength={40} />
-          <Text style={styles.text}>CPF:</Text>
-          <Input
-            keyboardType="numeric"
-            value={cpf}
-            onChangeText={setCpf}
-            maxLength={11}
-            placeholder="Somente números"
-          />
+    <>
+      <View style={styles.container}>
+        <Button style={styles.text} onPress={() => navigation.navigate("Home")}>
+          Voltar a página inicial
+        </Button>
+        <View style={styles.form}>
+          <Text style={styles.title}>
+            Preencha os dados para cadastrar um paciente:
+          </Text>
+          <Text style={styles.textError}>{error}</Text>
+          <View style={styles.label}>
+            <Text style={styles.text}>Nome:</Text>
+            <Input value={name} onChangeText={setName} maxLength={40} />
+            <Text style={styles.text}>CPF:</Text>
+            <Input
+              keyboardType="numeric"
+              value={cpf}
+              onChangeText={setCpf}
+              maxLength={11}
+              placeholder="Somente números"
+            />
+          </View>
+          <View style={styles.label}>
+            <Text style={styles.text}>Endereço:</Text>
+            <Input value={address} onChangeText={setAddress} maxLength={160} />
+          </View>
+          <View style={styles.label}>
+            <Text style={styles.text}>Idade:</Text>
+            <Input
+              value={age}
+              onChangeText={setAge}
+              maxLength={3}
+              placeholder="Somente números"
+            />
+            <Text style={styles.text}>Telefone:</Text>
+            <Input
+              value={cellphone}
+              onChangeText={setCellphone}
+              maxLength={13}
+              keyboardType="numeric"
+              placeholder="Somente números"
+            />
+          </View>
         </View>
-        <View style={styles.label}>
-          <Text style={styles.text}>Endereço:</Text>
-          <Input value={address} onChangeText={setAddress} maxLength={160} />
-        </View>
-        <View style={styles.label}>
-          <Text style={styles.text}>ID:</Text>
-          <Input value={id} onChangeText={setId} maxLength={5} />
-          <Text style={styles.text}>Telefone:</Text>
-          <Input
-            value={cellphone}
-            onChangeText={setCellphone}
-            maxLength={13}
-            keyboardType="numeric"
-          />
-        </View>
+        <Button
+          onPress={() => {
+            setError(undefined);
+            const patient = {
+              type: "patient",
+              name,
+              cpf,
+              address,
+              age,
+              cellphone,
+            };
+            const validation = validate(patient);
+            if (!validation.validated) {
+              setError(validation.error);
+              return;
+            }
+
+            localStorage.setItem(patient.cpf, JSON.stringify(patient));
+          }}
+        >
+          Cadastrar
+        </Button>
       </View>
-      <Button
-        onPress={() => {
-          const patient = {
-            name,
-            cpf,
-            address,
-            id,
-            cellphone,
-          };
-          console.log(patient);
-          console.log(validate(patient));
-          if (!validate(patient)) {
-            setError("Dados inválidos.");
-            console.log("Erro");
-            return;
-          }
-        }}
-      >
-        Cadastrar
-      </Button>
-    </View>
+    </>
   );
 }
 
@@ -102,5 +115,11 @@ const styles = StyleSheet.create({
     color: "#ffd435",
     fontSize: "2vh",
     fontWeight: "500",
+  },
+  textError: {
+    color: "#ffd435",
+    fontSize: "2vh",
+    fontWeight: "500",
+    paddingBottom: 30,
   },
 });

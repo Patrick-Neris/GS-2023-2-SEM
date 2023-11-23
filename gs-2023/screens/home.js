@@ -1,4 +1,4 @@
-import { ImageBackground, StyleSheet, Text, View } from "react-native";
+import { ImageBackground, StyleSheet, View } from "react-native";
 import background from "../images/remedios-amarelo.jpg";
 import Button from "../components/button";
 
@@ -14,7 +14,9 @@ export default function Home({ navigation }) {
           <Button onPress={() => navigation.navigate("CadastroPaciente")}>
             Cadastrar Paciente
           </Button>
-          <Button>Cadastrar Medicamento</Button>
+          <Button onPress={() => navigation.navigate("CadastroMedicamento")}>
+            Cadastrar Medicamento
+          </Button>
           <Button>Acompanhamento</Button>
         </View>
       </ImageBackground>
