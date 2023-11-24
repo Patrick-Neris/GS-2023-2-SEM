@@ -1,8 +1,15 @@
+import { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
 export default function Card({ remedy }) {
+  const [disabled, setDisabled] = useState(false);
+
+  if (disabled) {
+    return null;
+  }
+
   return (
-    <View style={styles.box}>
+    <View style={styles.box} aria-hidden={disabled}>
       <View style={styles.line}>
         <Text style={styles.lineText}>Remédio: </Text>
         <Text style={styles.lineText}>{remedy.medication}</Text>
@@ -16,7 +23,11 @@ export default function Card({ remedy }) {
       </View>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => finishOrCancelTreatment(remedy)}
+        onPress={() => {
+          finishOrCancelTreatment(remedy);
+          setDisabled(true);
+          console.log(disabled);
+        }}
       >
         <Text style={styles.buttonText}>Concluir/Cancelar tratamento</Text>
       </TouchableOpacity>
