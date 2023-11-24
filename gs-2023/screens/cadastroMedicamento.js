@@ -6,6 +6,7 @@ import { validate } from "../utils/validate";
 import axios from "axios";
 import { DatePickerInput } from "react-native-paper-dates";
 import Input from "../components/input";
+import { getPatients } from "../utils/getPatients";
 
 export default function CadastroMedicamento({ navigation }) {
   const [name, setName] = useState("");
@@ -52,7 +53,7 @@ export default function CadastroMedicamento({ navigation }) {
 
   const patients = getPatients();
 
-  const allCpf = [];
+  const allCpf = ["Selecione"];
   patients.forEach((patient) => {
     allCpf.push(patient.cpf);
   });
@@ -99,7 +100,11 @@ export default function CadastroMedicamento({ navigation }) {
             <Text style={styles.text}>Medicamento:</Text>
             <PickerList
               selectedValue={medication}
-              onValueChange={setMedication}
+              onValueChange={(item, value) => {
+                if (value !== 0) {
+                  setMedication(item);
+                }
+              }}
             >
               {Object.values(medicationList).map((pill, index) => (
                 <Picker.Item key={index} label={pill} value={pill} />
@@ -121,7 +126,11 @@ export default function CadastroMedicamento({ navigation }) {
             <Text style={styles.text}>às</Text>
             <PickerList
               selectedValue={time}
-              onValueChange={setTime}
+              onValueChange={(item, value) => {
+                if (value !== 0) {
+                  setTime(item);
+                }
+              }}
               style={styles.shortLabel}
             >
               {Object.values(timetable).map((schedule, index) => (
@@ -140,7 +149,11 @@ export default function CadastroMedicamento({ navigation }) {
 
             <PickerList
               selectedValue={measurement}
-              onValueChange={setMeasurement}
+              onValueChange={(item, value) => {
+                if (value !== 0) {
+                  setMeasurement(item);
+                }
+              }}
             >
               {Object.values(measurementList).map((measurement, index) => (
                 <Picker.Item
@@ -159,7 +172,11 @@ export default function CadastroMedicamento({ navigation }) {
             />
             <PickerList
               selectedValue={intervalMeasurement}
-              onValueChange={setIntervalMeasurement}
+              onValueChange={(item, value) => {
+                if (value !== 0) {
+                  setIntervalMeasurement(item);
+                }
+              }}
             >
               {Object.values(treatmentSchedule).map((treatment, index) => (
                 <Picker.Item key={index} label={treatment} value={treatment} />
@@ -174,7 +191,14 @@ export default function CadastroMedicamento({ navigation }) {
               maxLength={2}
               placeholder="Somente números"
             />
-            <PickerList selectedValue={treatment} onValueChange={setTreatment}>
+            <PickerList
+              selectedValue={treatment}
+              onValueChange={(item, value) => {
+                if (value !== 0) {
+                  setTreatment(item);
+                }
+              }}
+            >
               {Object.values(treatmentSchedule).map((treatment, index) => (
                 <Picker.Item key={index} label={treatment} value={treatment} />
               ))}
@@ -219,9 +243,7 @@ export default function CadastroMedicamento({ navigation }) {
               text: `Tomar ${quantity} ${measurement} a cada ${interval} ${intervalMeasurement} por ${period} ${treatment}.`,
             });
 
-            console.log(savedMedication);
-
-            // localStorage.setItem(`m-${cpf}`, JSON.stringify(savedMedication));
+            localStorage.setItem(`m-${cpf}`, JSON.stringify(savedMedication));
           }}
         >
           Cadastrar
@@ -229,27 +251,6 @@ export default function CadastroMedicamento({ navigation }) {
       </View>
     </>
   );
-}
-
-function getPatients() {
-  const patients = [];
-  const keys = Object.keys(localStorage);
-
-  // Removendo objeto do próprio expo
-  const index = keys.indexOf("EXPO_CONSTANTS_INSTALLATION_ID");
-  if (index > -1) keys.splice(index, 1);
-
-  for (const key of keys) {
-    let item = localStorage.getItem(key);
-    item = JSON.parse(item);
-    if (item.type === "patient") {
-      patients.push({
-        name: item.name,
-        cpf: item.cpf,
-      });
-    }
-  }
-  return patients;
 }
 
 const styles = StyleSheet.create({

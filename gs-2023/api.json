@@ -1,5 +1,6 @@
 {
   "remedios": [
+    "Selecione o remédio",
     "Paracetamol",
     "Ibuprofeno",
     "Omeprazol",
@@ -12,6 +13,7 @@
     "Aspirina"
   ],
   "horarios": [
+    "Selecione o horário",
     "00h00",
     "00h30",
     "01h00",
@@ -61,6 +63,12 @@
     "23h00",
     "23h30"
   ],
-  "quantidade": ["comprimido(s)", "ml"],
-  "periodos": ["hora(s)", "dia(s)", "semana(s)", "mês(es)"]
+  "quantidade": ["Selecione a unidade", "comprimido(s)", "ml"],
+  "periodos": [
+    "Selecione o tipo de período",
+    "hora(s)",
+    "dia(s)",
+    "semana(s)",
+    "mês(es)"
+  ]
 }

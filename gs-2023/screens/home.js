@@ -17,7 +17,9 @@ export default function Home({ navigation }) {
           <Button onPress={() => navigation.navigate("CadastroMedicamento")}>
             Cadastrar Medicamento
           </Button>
-          <Button>Acompanhamento</Button>
+          <Button onPress={() => navigation.navigate("Acompanhamento")}>
+            Acompanhamento
+          </Button>
         </View>
       </ImageBackground>
     </View>
