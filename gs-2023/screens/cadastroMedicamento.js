@@ -7,6 +7,7 @@ import axios from "axios";
 import { DatePickerInput } from "react-native-paper-dates";
 import Input from "../components/input";
 import { getPatients } from "../utils/getPatients";
+import { Modal } from "../components/modal";
 
 export default function CadastroMedicamento({ navigation }) {
   const [name, setName] = useState("");
@@ -26,6 +27,11 @@ export default function CadastroMedicamento({ navigation }) {
   const [treatmentSchedule, setTreatmentSchedule] = useState("");
   const [interval, setInterval] = useState("");
   const [intervalMeasurement, setIntervalMeasurement] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  function handleModal() {
+    setIsModalVisible(() => !isModalVisible);
+  }
 
   useEffect(() => {
     axios
@@ -244,11 +250,20 @@ export default function CadastroMedicamento({ navigation }) {
             });
 
             localStorage.setItem(`m-${cpf}`, JSON.stringify(savedMedication));
+            handleModal();
           }}
         >
           Cadastrar
         </Button>
       </View>
+      <Modal isVisible={isModalVisible}>
+        <Modal.Container>
+          <Modal.Header title="Medicamento cadastrado!" />
+          <Modal.Footer>
+            <Button onPress={handleModal}>Entendido</Button>
+          </Modal.Footer>
+        </Modal.Container>
+      </Modal>
     </>
   );
 }

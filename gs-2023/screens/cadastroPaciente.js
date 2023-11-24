@@ -3,6 +3,7 @@ import Input from "../components/input";
 import { useState } from "react";
 import Button from "../components/button";
 import { validate } from "../utils/validate";
+import { Modal } from "../components/modal";
 
 export default function CadastroPaciente({ navigation }) {
   const [name, setName] = useState("");
@@ -11,6 +12,12 @@ export default function CadastroPaciente({ navigation }) {
   const [age, setAge] = useState("");
   const [cellphone, setCellphone] = useState("");
   const [error, setError] = useState("");
+  const [isModalVisible, setIsModalVisible] = useState(false);
+
+  function handleModal() {
+    setIsModalVisible(() => !isModalVisible);
+  }
+
   return (
     <>
       <View style={styles.container}>
@@ -74,11 +81,21 @@ export default function CadastroPaciente({ navigation }) {
             }
 
             localStorage.setItem(patient.cpf, JSON.stringify(patient));
+            handleModal();
           }}
         >
           Cadastrar
         </Button>
       </View>
+
+      <Modal isVisible={isModalVisible}>
+        <Modal.Container>
+          <Modal.Header title="Paciente cadastrado!" />
+          <Modal.Footer>
+            <Button onPress={handleModal}>Entendido</Button>
+          </Modal.Footer>
+        </Modal.Container>
+      </Modal>
     </>
   );
 }
